@@ -5,6 +5,13 @@ const ExpenseService = {
       .from('transactions')
   },
 
+  getExpenseById(db, id) {
+    return db
+      .select('*')
+      .from('transactions')
+      .where({ account: id })
+  },
+
   addExpense(db, newExpense) {
     return db
       .insert(newExpense)
@@ -24,7 +31,7 @@ const ExpenseService = {
 
   updateExpense(db, id, newExpenseData) {
     return db
-      .update(expenseData)
+      .update(newExpenseData)
       .from('transactions')
       .where({ id })
   }

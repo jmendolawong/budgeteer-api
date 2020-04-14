@@ -42,7 +42,6 @@ expenseRouter
     const { category, date, cost, payee = '', memo = '' } = req.body;
     const newExpense = { category, date, cost }
 
-
     //request body validation
     for (const [key, value] of Object.entries(newExpense))
       if (value == null) {
@@ -53,6 +52,8 @@ expenseRouter
 
     // Get uuid for newExpense id 
     const id = uuid();
+    //const account = req.params.accoundId
+    //newExpense.account = account;
     newExpense.id = id
 
     //add optional fields
@@ -75,6 +76,23 @@ expenseRouter
 
 expenseRouter
   .route('/:accountId/transaction/:transactionId')
+  .all((req, res, next) => {
+
+    ExpenseService.getExpenseById(
+      req.app.get('db'),
+      req.params.transactionid
+    )
+      .then(expense => {
+        if (!expense) {
+          return res.status(400).json({
+            error: `Expense does not exist`
+          })
+        }
+        res.expense = expense
+        next();
+      })
+      .catch(next)
+  })
   .delete((req, res, next) => {
     //const account = req.params.accountId;
     const id = req.params.transactionId;
@@ -85,6 +103,27 @@ expenseRouter
       //, account
     )
       .then(() => {
+        res.status(204).end()
+      })
+      .catch(next)
+  })
+  .patch(bodyParser, (req, res, next) => {
+    const { category, date, cost } = req.body;
+    const updatedExpense = { category, date, cost };
+
+    const numOfValues = Object.values(updatedExpense).filter(Boolean).length
+    if (numOfValues === 0) {
+      return res.status(400).json({
+        error: `Request body must contain either 'category', 'date', or 'cost'`
+      })
+    }
+
+    ExpenseService.updateExpense(
+      req.app.get('db'),
+      req.params.transactionId,
+      updatedExpense
+    )
+      .then(numOfRowsAffected => {
         res.status(204).end()
       })
       .catch(next)
