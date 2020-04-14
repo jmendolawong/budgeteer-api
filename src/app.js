@@ -5,10 +5,10 @@ const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config.js')
 
+const expenseRouter = require('./expenses/expense-router')
+
 const app = express();
 
-const bodyParser = express.json()
-const xss = require('xss')
 
 /***********  Middleware ***********/
 app.use(helmet())
@@ -19,22 +19,7 @@ app.use(morgan(morganSetting))
 
 
 /***********  Endpoints ***********/
-const expenses = require('./expenses.js');
-
-app.get('/expenses', (req, res) => {
-  res.json(expenses)
-})
-
-app.post(bodyParser, (req, res) => {
-  const { category, date, cost, payee='', memo='' } = req.body;
-  const newExpense = { category, date, cost }
-
-  res
-    .status(201)
-    .location(path.posix.join(req.originalUrl, '/'))
-})
-
-
+app.use('/api', expenseRouter)
 
 
 
