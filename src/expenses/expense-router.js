@@ -84,7 +84,6 @@ expenseRouter
           })
         }
         res.expense = expense
-        console.log(res.expense)
         next();
       })
       .catch(next)
@@ -94,11 +93,9 @@ expenseRouter
   })
   .delete((req, res, next) => {
     //const account = req.params.accountId;
-    const id = req.params.transactionId;
-
     ExpenseService.deleteExpense(
       req.app.get('db'),
-      id
+      req.params.transactionId
       //, account
     )
       .then(() => {

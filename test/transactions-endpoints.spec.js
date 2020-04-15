@@ -89,11 +89,11 @@ describe('Transactions endpoints', function () {
   describe('POST /api/:accountId/transactions', () => {
     it('responds 201 and inserts new transaction', () => {
       const newTransaction = {
-        category: 'Groceries',
-        date: '01/01/2020',
-        cost: '2.50',
-        payee: 'test payee',
-        memo: 'test memo'
+        "category": "Groceries",
+        "date": "01/01/2020",
+        "cost": "2.50",
+        "payee": "test payee",
+        "memo": "test memo"
       }
 
       return supertest(app)
@@ -141,11 +141,12 @@ describe('Transactions endpoints', function () {
 
   /************  DELETE Endpoints ************/
 
-  describe.only('DELETE /:accountId/transactions/:transactionId', () => {
+  describe('DELETE /:accountId/transactions/:transactionId', () => {
     context('No transaction with that id', () => {
       it('responds 404', () => {
+        const id = 1234
         return supertest(app)
-          .delete(`/123/transactions/4655fa13-8ce0-413f-b5d9-2f1694c16c43`)
+          .delete(`/api/:accountId/transactions/${id}`)
           .expect(404, { error: { message: `Expense doesn't exist` } })
       })
     })
@@ -163,11 +164,11 @@ describe('Transactions endpoints', function () {
         const id = '2bf4cc8e-5670-4f44-b7dc-32a8bda159ac'
         const remainingTransactions = testTransactions.filter(transaction => transaction.id !== id)
         return supertest(app)
-          .delete(`/:accountId/transactions/${id}`)
+          .delete(`/api/:accountId/transactions/${id}`)
           .expect(204)
           .then(res => {
             supertest(app)
-              .get(`/:accountId/transactions/:transactionId`)
+              .get(`/api/:accountId/transactions`)
               .expect(remainingTransactions)
           })
       })
