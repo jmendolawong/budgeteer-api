@@ -2,6 +2,7 @@ const express = require('express');
 const xss = require('xss');
 const path = require('path');
 const uuid = require('uuid/v4');
+const moment = require('moment')
 const ExpenseService = require('./expense-service');
 
 const expenseRouter = express.Router()
@@ -11,8 +12,8 @@ const bodyParser = express.json()
 const sanitizeExpense = expense => ({
   id: expense.id,
   category: xss(expense.category),
-  date: xss(expense.date),
-  cost: xss(expense.cost),
+  date: xss(moment(expense.date).format("MM/DD/YYYY")),
+  cost: xss(parseFloat(expense.cost).toFixed(2)),
   payee: xss(expense.payee),
   memo: xss(expense.memo),
   account: xss(expense.account)
@@ -42,7 +43,7 @@ expenseRouter
     for (const [key, value] of Object.entries(newExpense))
       if (value == null) {
         return res.status(400).json({
-          error: `Missing ${key} in request body`
+          error: `Missing '${key}' in request body`
         })
       }
 
@@ -59,7 +60,6 @@ expenseRouter
     ExpenseService.addExpense(
       req.app.get('db'),
       newExpense
-      //,      req.params.accountId
     )
       .then(expense => {
         res
@@ -81,7 +81,7 @@ expenseRouter
       .then(expense => {
         if (!expense) {
           return res.status(404).json({
-            error: `Expense does not exist`
+            error: { message: `Expense doesn't exist` }
           })
         }
         res.expense = expense
