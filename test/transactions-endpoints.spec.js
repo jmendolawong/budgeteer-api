@@ -86,7 +86,7 @@ describe('Transactions endpoints', function () {
   })
 
   /************  POST Endpoints ************/
-  describe.only('POST /api/:accountId/transactions', () => {
+  describe('POST /api/:accountId/transactions', () => {
     it('responds 201 and inserts new transaction', () => {
       const newTransaction = {
         category: 'Groceries',
@@ -141,12 +141,11 @@ describe('Transactions endpoints', function () {
 
   /************  DELETE Endpoints ************/
 
-  describe('DELETE /:accountId/transactions/:transactionId', () => {
+  describe.only('DELETE /:accountId/transactions/:transactionId', () => {
     context('No transaction with that id', () => {
       it('responds 404', () => {
-        const id = '5aa52679-1636-4b33-adc8-b27b7ca56fa8'
         return supertest(app)
-          .delete(`/:accountId/transactions/${id}`)
+          .delete(`/123/transactions/4655fa13-8ce0-413f-b5d9-2f1694c16c43`)
           .expect(404, { error: { message: `Expense doesn't exist` } })
       })
     })
@@ -161,7 +160,7 @@ describe('Transactions endpoints', function () {
       })
 
       it('responds 204 and the remaining articles', () => {
-        const id = '5aa52679-1636-4b33-adc8-b27b7ca56fa8'
+        const id = '2bf4cc8e-5670-4f44-b7dc-32a8bda159ac'
         const remainingTransactions = testTransactions.filter(transaction => transaction.id !== id)
         return supertest(app)
           .delete(`/:accountId/transactions/${id}`)

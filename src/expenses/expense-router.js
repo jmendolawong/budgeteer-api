@@ -73,7 +73,6 @@ expenseRouter
 expenseRouter
   .route('/:accountId/transactions/:transactionId')
   .all((req, res, next) => {
-
     ExpenseService.getExpenseById(
       req.app.get('db'),
       req.params.transactionId
@@ -85,6 +84,7 @@ expenseRouter
           })
         }
         res.expense = expense
+        console.log(res.expense)
         next();
       })
       .catch(next)
