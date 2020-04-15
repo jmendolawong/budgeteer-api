@@ -3,38 +3,27 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
-const { NODE_ENV } = require('./config.js')
+const { NODE_ENV, CLIENT_ORIGIN } = require('./config.js')
+
+const expenseRouter = require('./expenses/expense-router')
 
 const app = express();
 
-const bodyParser = express.json()
-const xss = require('xss')
 
 /***********  Middleware ***********/
 app.use(helmet())
-app.use(cors())
+app.use(
+  cors({
+    origin: CLIENT_ORIGIN
+  })
+);
 const morganSetting = NODE_ENV === 'production' ? 'tiny' : 'dev';
 app.use(morgan(morganSetting))
 
 
 
 /***********  Endpoints ***********/
-const expenses = require('./expenses.js');
-
-app.get('/expenses', (req, res) => {
-  res.json(expenses)
-})
-
-app.post(bodyParser, (req, res) => {
-  const { category, date, cost, payee='', memo='' } = req.body;
-  const newExpense = { category, date, cost }
-
-  res
-    .status(201)
-    .location(path.posix.join(req.originalUrl, '/'))
-})
-
-
+app.use('/api', expenseRouter)
 
 
 
