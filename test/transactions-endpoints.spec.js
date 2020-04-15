@@ -89,30 +89,29 @@ describe('Transactions endpoints', function () {
   describe('POST /api/:accountId/transactions', () => {
     it('responds 201 and inserts new transaction', () => {
       const newTransaction = {
-        "category": "Groceries",
-        "date": "01/01/2020",
-        "cost": "2.50",
-        "payee": "test payee",
-        "memo": "test memo"
+        category: 'Shopping',
+        date: '01/01/2020',
+        cost: '1.50',
+        payee: 'test payee',
+        memo: 'test memo'
       }
 
       return supertest(app)
-        .post('/api/7a3b2c59-7689-498d-acbb-e6d0ec17e2c3/transactions')
+        .post('/api/10954ec2-1f78-4ccd-8335-26de3edbb7b1/transactions')
         .send(newTransaction)
         .expect(201)
         .expect(res => {
-          console.log(res.body)
           expect(res.body).to.have.property('id')
           expect(res.body.category).to.eql(newTransaction.category)
           expect(res.body.date).to.eql(newTransaction.date)
           expect(res.body.cost).to.eql(newTransaction.cost)
           expect(res.body.payee).to.eql(newTransaction.payee)
           expect(res.body.memo).to.eql(newTransaction.memo)
-          expect(res.headers.location).to.eql(`/api/7a3b2c59-7689-498d-acbb-e6d0ec17e2c3/transactions/${res.body.id}`)
+          expect(res.headers.location).to.eql(`/api/10954ec2-1f78-4ccd-8335-26de3edbb7b1/transactions/${res.body.id}`)
         })
         .then(postRes =>
           supertest(app)
-            .get(`/api/7a3b2c59-7689-498d-acbb-e6d0ec17e2c3/transactions/${postRes.body.id}`)
+            .get(`/api/10954ec2-1f78-4ccd-8335-26de3edbb7b1/transactions/${postRes.body.id}`)
             .expect(postRes.body)
         )
     })
