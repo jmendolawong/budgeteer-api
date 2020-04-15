@@ -14,7 +14,8 @@ const sanitizeExpense = expense => ({
   date: xss(expense.date),
   cost: xss(expense.cost),
   payee: xss(expense.payee),
-  memo: xss(expense.memo)
+  memo: xss(expense.memo),
+  account: xss(expense.account)
 })
 
 
@@ -22,11 +23,6 @@ const sanitizeExpense = expense => ({
 /***********  Endpoints ***********/
 
 expenseRouter
-  /*
-  GET all transactions
-  PATCH transaction
-  DELETE transaction
-  */
   .route('/:accountId/transactions')
   .get((req, res, next) => {
     ExpenseService.getAllExpenses(
@@ -52,8 +48,8 @@ expenseRouter
 
     // Get uuid for newExpense id 
     const id = uuid();
-    //const account = req.params.accoundId
-    //newExpense.account = account;
+    const account = req.params.accountId
+    newExpense.account = account;
     newExpense.id = id
 
     //add optional fields
@@ -75,16 +71,16 @@ expenseRouter
   })
 
 expenseRouter
-  .route('/:accountId/transaction/:transactionId')
+  .route('/:accountId/transactions/:transactionId')
   .all((req, res, next) => {
 
     ExpenseService.getExpenseById(
       req.app.get('db'),
-      req.params.transactionid
+      req.params.transactionId
     )
       .then(expense => {
         if (!expense) {
-          return res.status(400).json({
+          return res.status(404).json({
             error: `Expense does not exist`
           })
         }
@@ -92,6 +88,9 @@ expenseRouter
         next();
       })
       .catch(next)
+  })
+  .get((req, res, next) => {
+    return res.json(sanitizeExpense(res.expense))
   })
   .delete((req, res, next) => {
     //const account = req.params.accountId;
@@ -108,15 +107,17 @@ expenseRouter
       .catch(next)
   })
   .patch(bodyParser, (req, res, next) => {
-    const { category, date, cost } = req.body;
-    const updatedExpense = { category, date, cost };
+    const { category, date, cost, payee, memo } = req.body;
+    const updatedExpense = { category, date, cost, payee, memo };
 
     const numOfValues = Object.values(updatedExpense).filter(Boolean).length
     if (numOfValues === 0) {
       return res.status(400).json({
-        error: `Request body must contain either 'category', 'date', or 'cost'`
+        error: `Request body must contain an updated field`
       })
     }
+
+    //Also need category enum validation
 
     ExpenseService.updateExpense(
       req.app.get('db'),

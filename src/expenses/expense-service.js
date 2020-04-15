@@ -3,13 +3,16 @@ const ExpenseService = {
     return db
       .select('*')
       .from('transactions')
+      //.where(knex.raw(`to_char(date, 'MM/DD/YYYY')`))
+      .orderBy('date', 'desc')
   },
 
   getExpenseById(db, id) {
     return db
       .select('*')
       .from('transactions')
-      .where({ account: id })
+      .where({ id })
+      .first()
   },
 
   addExpense(db, newExpense) {
