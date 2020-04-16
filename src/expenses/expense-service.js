@@ -1,9 +1,14 @@
 const ExpenseService = {
+  getAllCategories(db) {
+    return(db)
+      .from('transactions')
+      .distinct('category')
+  },
+
   getAllExpenses(db) {
     return db
       .select('*')
       .from('transactions')
-      //.where(knex.raw(`to_char(date, 'MM/DD/YYYY')`))
       .orderBy('date', 'desc')
   },
 

@@ -19,10 +19,28 @@ const sanitizeExpense = expense => ({
   account: xss(expense.account)
 })
 
+const sanitizeCategory = item => ({
+  category: xss(item.category)
+})
 
 
-/***********  Endpoints ***********/
+/***********  Category Endpoints ***********/
+expenseRouter
+  .route('/:accountId/categories')
+  .get((req, res, next) => {
+    ExpenseService.getAllCategories(
+      req.app.get('db'),
+      //,     req.params.accountId
+    )
+      .then(categories => {
+        res.json(categories.map(sanitizeCategory))
+      })
+      .catch(next)
+  })
 
+
+
+/*********** Transactions Endpoints ***********/
 expenseRouter
   .route('/:accountId')
   .get((req, res, next) => {
