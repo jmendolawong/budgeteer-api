@@ -24,7 +24,7 @@ const sanitizeExpense = expense => ({
 /***********  Endpoints ***********/
 
 expenseRouter
-  .route('/:accountId/transactions')
+  .route('/:accountId')
   .get((req, res, next) => {
     ExpenseService.getAllExpenses(
       req.app.get('db')
@@ -64,7 +64,7 @@ expenseRouter
       .then(expense => {
         res
           .status(201)
-          .location(path.posix.join(req.originalUrl, `/${newExpense.id}`))
+          .location(path.posix.join(req.originalUrl, `/transactions/${newExpense.id}`))
           .json(sanitizeExpense(expense))
       })
       .catch(next)

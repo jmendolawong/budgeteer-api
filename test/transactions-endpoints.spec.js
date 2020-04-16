@@ -26,12 +26,12 @@ describe('Transactions endpoints', function () {
 
   /************  GET Endpoints ************/
 
-  describe('GET /api/:accountId/transactions', () => {
+  describe('GET /api/:accountId', () => {
 
     context('Given no transactions in the db', () => {
       it('responds 200 and empty list', () => {
         return supertest(app)
-          .get('/api/:accountId/transactions')
+          .get('/api/:accountId')
           .expect(200, [])
       })
     })
@@ -47,7 +47,7 @@ describe('Transactions endpoints', function () {
 
       it('responds 200 and all transactions', () => {
         return supertest(app)
-          .get('/api/:accountId/transactions')
+          .get('/api/:accountId')
           .expect(200, testTransactions)
       })
     })
@@ -86,7 +86,7 @@ describe('Transactions endpoints', function () {
   })
 
   /************  POST Endpoints ************/
-  describe('POST /api/:accountId/transactions', () => {
+  describe('POST /api/:accountId', () => {
     it('responds 201 and inserts new transaction', () => {
       const newTransaction = {
         category: 'Shopping',
@@ -97,7 +97,7 @@ describe('Transactions endpoints', function () {
       }
 
       return supertest(app)
-        .post('/api/10954ec2-1f78-4ccd-8335-26de3edbb7b1/transactions')
+        .post('/api/10954ec2-1f78-4ccd-8335-26de3edbb7b1')
         .send(newTransaction)
         .expect(201)
         .expect(res => {
@@ -129,7 +129,7 @@ describe('Transactions endpoints', function () {
         delete newTransaction[field]
 
         return supertest(app)
-          .post('/api/:accountId/transactions')
+          .post('/api/:accountId')
           .send(newTransaction)
           .expect(400, {
             error: `Missing '${field}' in request body`,
@@ -167,7 +167,7 @@ describe('Transactions endpoints', function () {
           .expect(204)
           .then(res => {
             supertest(app)
-              .get(`/api/:accountId/transactions`)
+              .get(`/api/:accountId`)
               .expect(remainingTransactions)
           })
       })
