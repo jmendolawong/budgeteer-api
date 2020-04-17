@@ -4,6 +4,7 @@ const path = require('path');
 const uuid = require('uuid/v4');
 const moment = require('moment')
 const ExpenseService = require('./expense-service');
+const { requireAuth } = require('../middleware/basic-auth')
 
 const expenseRouter = express.Router()
 const bodyParser = express.json()
@@ -23,6 +24,7 @@ const sanitizeExpense = expense => ({
 /*********** Transactions Endpoints ***********/
 expenseRouter
   .route('/:accountId')
+  .all(requireAuth)
   .get((req, res, next) => {
     ExpenseService.getAllExpenses(
       req.app.get('db')
@@ -33,7 +35,7 @@ expenseRouter
       })
       .catch(next)
   })
-  .post(bodyParser, (req, res, next) => {
+  .post(requireAuth, bodyParser, (req, res, next) => {
     const { category, date, cost, payee = '', memo = '' } = req.body;
     const newExpense = { category, date, cost }
 
@@ -70,6 +72,7 @@ expenseRouter
 
 expenseRouter
   .route('/:accountId/transactions/:transactionId')
+  .all(requireAuth)
   .all((req, res, next) => {
     ExpenseService.getExpenseById(
       req.app.get('db'),
@@ -101,7 +104,7 @@ expenseRouter
       })
       .catch(next)
   })
- 
+
 
 /*
  

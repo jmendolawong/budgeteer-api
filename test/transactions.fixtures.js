@@ -66,6 +66,22 @@ function makeTransactionsArray() {
   ]
 }
 
+function makeUsersArray() {
+  return [
+    {
+      "id": "10954ec2-1f78-4ccd-8335-26de3edbb7b1",
+      "username": "testUser",
+      "password": "password"
+    },
+    {
+      "id": ":accountId",
+      "username": "tester",
+      "password": "pass1"
+    }
+  ]
+}
+
 module.exports = {
-  makeTransactionsArray
+  makeTransactionsArray,
+  makeUsersArray
 }
