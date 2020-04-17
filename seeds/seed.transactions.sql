@@ -3,6 +3,9 @@ TRUNCATE users, transactions;
 INSERT INTO users(id, email, password) VALUES
   (
     '10954ec2-1f78-4ccd-8335-26de3edbb7b1', 'test@gmail.com', 'password'
+  ),
+  (
+    ':accountId', 'tester@gmail.com', 'pass1'
   );
 
 INSERT INTO transactions (id, category, date, cost, payee, memo, account) VALUES

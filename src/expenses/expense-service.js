@@ -1,10 +1,5 @@
 const ExpenseService = {
-  getAllCategories(db) {
-    return(db)
-      .from('transactions')
-      .distinct('category')
-  },
-
+ 
   getAllExpenses(db) {
     return db
       .select('*')
@@ -37,12 +32,6 @@ const ExpenseService = {
       .where({ id })
   },
 
-  updateExpense(db, id, newExpenseData) {
-    return db
-      .update(newExpenseData)
-      .from('transactions')
-      .where({ id })
-  }
 }
 
 module.exports = ExpenseService

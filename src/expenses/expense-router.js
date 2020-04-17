@@ -19,26 +19,6 @@ const sanitizeExpense = expense => ({
   account: xss(expense.account)
 })
 
-const sanitizeCategory = item => ({
-  category: xss(item.category)
-})
-
-
-/***********  Category Endpoints ***********/
-expenseRouter
-  .route('/:accountId/categories')
-  .get((req, res, next) => {
-    ExpenseService.getAllCategories(
-      req.app.get('db'),
-      //,     req.params.accountId
-    )
-      .then(categories => {
-        res.json(categories.map(sanitizeCategory))
-      })
-      .catch(next)
-  })
-
-
 
 /*********** Transactions Endpoints ***********/
 expenseRouter
@@ -121,29 +101,7 @@ expenseRouter
       })
       .catch(next)
   })
-  .patch(bodyParser, (req, res, next) => {
-    const { category, date, cost, payee, memo } = req.body;
-    const updatedExpense = { category, date, cost, payee, memo };
-
-    const numOfValues = Object.values(updatedExpense).filter(Boolean).length
-    if (numOfValues === 0) {
-      return res.status(400).json({
-        error: `Request body must contain an updated field`
-      })
-    }
-
-    //Also need category enum validation
-
-    ExpenseService.updateExpense(
-      req.app.get('db'),
-      req.params.transactionId,
-      updatedExpense
-    )
-      .then(numOfRowsAffected => {
-        res.status(204).end()
-      })
-      .catch(next)
-  })
+ 
 
 /*
  
