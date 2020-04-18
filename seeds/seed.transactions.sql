@@ -2,10 +2,10 @@ TRUNCATE users, transactions;
 
 INSERT INTO users(id, userName, password) VALUES
   (
-    '10954ec2-1f78-4ccd-8335-26de3edbb7b1', 'testUser',  '$2a$12$iUC/xdOc3vF.HaODIl0/weX37t61W/J85Df1diWV3KUiHfDyQrFPW'
+    '10954ec2-1f78-4ccd-8335-26de3edbb7b1', 'testUser', '$2a$12$iUC/xdOc3vF.HaODIl0/weX37t61W/J85Df1diWV3KUiHfDyQrFPW'
   ),
   (
-    ':accountId', 'tester',  '$2a$12$R.WMeCLVMY14J/cL3XqJ3OdkTA2n3XgvGRRyWGUloo8DvrGPusZ0q'
+    ':accountId', 'tester', '$2a$12$R.WMeCLVMY14J/cL3XqJ3OdkTA2n3XgvGRRyWGUloo8DvrGPusZ0q'
   );
 
 

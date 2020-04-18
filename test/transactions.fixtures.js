@@ -95,7 +95,7 @@ function seedUsers(db, users) {
     ...user,
     password: bcrypt.hashSync(user.password, 1)
   }))
-  return db.into('blogful_users').insert(preppedUsers)
+  return db.into('users').insert(preppedUsers)
 }
 
 module.exports = {
