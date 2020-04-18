@@ -1,3 +1,6 @@
+const bcrypt = require('bcryptjs')
+
+
 function makeTransactionsArray() {
   return [
     {
@@ -76,12 +79,28 @@ function makeUsersArray() {
     {
       "id": ":accountId",
       "username": "tester",
-      "password": "pass1"
+      "password": "password1"
     }
   ]
 }
 
+function makeAuthHeader(user) {
+  const token = Buffer.from(`${user.username}:${user.password}`).toString('base64')
+  return `Basic ${token}`
+}
+
+
+function seedUsers(db, users) {
+  const preppedUsers = users.map(user => ({
+    ...user,
+    password: bcrypt.hashSync(user.password, 1)
+  }))
+  return db.into('blogful_users').insert(preppedUsers)
+}
+
 module.exports = {
   makeTransactionsArray,
-  makeUsersArray
+  makeUsersArray,
+  makeAuthHeader,
+  seedUsers,
 }

@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const knex = require('knex')
 const app = require('../src/app.js')
-const { makeTransactionsArray, makeUsersArray } = require('./transactions.fixtures')
+const { makeTransactionsArray, makeUsersArray, makeAuthHeader, seedUsers } = require('./transactions.fixtures')
 
 describe('Transactions endpoints', function () {
   let db
@@ -9,11 +9,7 @@ describe('Transactions endpoints', function () {
   const testUsers = makeUsersArray();
   const testTransactions = makeTransactionsArray();
 
-  function makeAuthHeader(user) {
-    const token = Buffer.from(`${user.username}:${user.password}`).toString('base64')
-    return `Basic ${token}`
-  }
-
+ 
 
   before('make knex instance', () => {
     db = knex({
