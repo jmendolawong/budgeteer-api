@@ -6,6 +6,7 @@ const helmet = require('helmet')
 const { NODE_ENV, CLIENT_ORIGIN } = require('./config.js')
 
 const expenseRouter = require('./expenses/expense-router')
+const authRouter = require('./auth/auth-router')
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(morgan(morganSetting))
 
 
 /***********  Endpoints ***********/
+app.use('/api/authentication', authRouter)
 app.use('/api', expenseRouter)
 
 

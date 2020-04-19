@@ -1,13 +1,13 @@
 const { expect } = require('chai');
 const knex = require('knex')
 const app = require('../src/app.js')
-const { makeTransactionsArray, makeUsersArray, makeAuthHeader, seedUsers } = require('./transactions.fixtures')
+const helpers = require('./test-helpers')
 
 describe('Transactions endpoints', function () {
   let db
 
-  const testUsers = makeUsersArray();
-  const testTransactions = makeTransactionsArray();
+  const testUsers = helpers.makeUsersArray();
+  const testTransactions = helpers.makeTransactionsArray();
 
   before('make knex instance', () => {
     db = knex({
@@ -31,7 +31,7 @@ describe('Transactions endpoints', function () {
     return db
       .insert(testTransactions)
       .into('transactions'),
-      seedUsers(db, testUsers)
+      helpers.seedUsers(db, testUsers)
   })
 
 
@@ -62,7 +62,7 @@ describe('Transactions endpoints', function () {
           const userNoCreds = { username: '', password: '' }
           return supertest(app)
             .get(endpoint.path)
-            .set('Authorization', makeAuthHeader(userNoCreds))
+            .set('Authorization', helpers.makeAuthHeader(userNoCreds))
             .expect(401, { error: `Unauthorized request` })
         })
 
@@ -70,7 +70,7 @@ describe('Transactions endpoints', function () {
           const userInvalidCreds = { username: 'user-not', password: 'existy' }
           return supertest(app)
             .get(endpoint.path)
-            .set('Authorization', makeAuthHeader(userInvalidCreds))
+            .set('Authorization', helpers.makeAuthHeader(userInvalidCreds))
             .expect(401, { error: `Unauthorized request` })
         })
 
@@ -78,7 +78,7 @@ describe('Transactions endpoints', function () {
           const userInvalidPass = { username: testUsers[0].username, password: 'wrong' }
           return supertest(app)
             .get(endpoint.path)
-            .set('Authorization', makeAuthHeader(userInvalidPass))
+            .set('Authorization', helpers.makeAuthHeader(userInvalidPass))
             .expect(401, { error: `Unauthorized request` })
         })
 
@@ -98,7 +98,7 @@ describe('Transactions endpoints', function () {
         it('responds 200 and empty list', () => {
           return supertest(app)
             .get('/api/:accountId')
-            .set('Authorization', makeAuthHeader(testUsers[0]))
+            .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .expect(200, [])
         })
       })
@@ -106,7 +106,7 @@ describe('Transactions endpoints', function () {
       context('Given transactions in the db', () => {
 
         beforeEach('Seed table', () => {
-          seedUsers(db, testUsers)
+          helpers.seedUsers(db, testUsers)
           return db
             .insert(testTransactions)
             .into('transactions')
@@ -115,7 +115,7 @@ describe('Transactions endpoints', function () {
         it('responds 200 and all transactions', () => {
           return supertest(app)
             .get('/api/:accountId')
-            .set('Authorization', makeAuthHeader(testUsers[0]))
+            .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .expect(200, testTransactions)
         })
       })
@@ -129,7 +129,7 @@ describe('Transactions endpoints', function () {
           const id = 1234
           return supertest(app)
             .get(`/api/:accountId/transactions/${id}`)
-            .set('Authorization', makeAuthHeader(testUsers[0]))
+            .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .expect(404, { error: { message: `Expense doesn't exist` } })
         })
       })
@@ -137,7 +137,7 @@ describe('Transactions endpoints', function () {
       context('Given transactions in the database', () => {
 
         beforeEach('Seed table', () => {
-          seedUsers(db, testUsers)
+          helpers.seedUsers(db, testUsers)
           return db
             .insert(testTransactions)
             .into('transactions')
@@ -148,7 +148,7 @@ describe('Transactions endpoints', function () {
           const expectedTransaction = testTransactions[transactionId]
           return supertest(app)
             .get(`/api/:accountId/transactions/d7c932ee-3474-482a-8f0e-49b64a67dd02`)
-            .set('Authorization', makeAuthHeader(testUsers[0]))
+            .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .expect(200, expectedTransaction)
         })
       })
@@ -169,7 +169,7 @@ describe('Transactions endpoints', function () {
 
         return supertest(app)
           .post('/api/10954ec2-1f78-4ccd-8335-26de3edbb7b1')
-          .set('Authorization', makeAuthHeader(testUsers[0]))
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
           .send(newTransaction)
           .expect(201)
           .expect(res => {
@@ -184,7 +184,7 @@ describe('Transactions endpoints', function () {
           .then(postRes =>
             supertest(app)
               .get(`/api/10954ec2-1f78-4ccd-8335-26de3edbb7b1/transactions/${postRes.body.id}`)
-              .set('Authorization', makeAuthHeader(testUsers[0]))
+              .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
               .expect(postRes.body)
           )
       })
@@ -203,7 +203,7 @@ describe('Transactions endpoints', function () {
 
           return supertest(app)
             .post('/api/:accountId')
-            .set('Authorization', makeAuthHeader(testUsers[0]))
+            .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .send(newTransaction)
             .expect(400, {
               error: `Missing '${field}' in request body`,
@@ -221,7 +221,7 @@ describe('Transactions endpoints', function () {
           const id = 1234
           return supertest(app)
             .delete(`/api/:accountId/transactions/${id}`)
-            .set('Authorization', makeAuthHeader(testUsers[0]))
+            .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .expect(404, { error: { message: `Expense doesn't exist` } })
         })
       })
@@ -240,12 +240,12 @@ describe('Transactions endpoints', function () {
           const remainingTransactions = testTransactions.filter(transaction => transaction.id !== id)
           return supertest(app)
             .delete(`/api/:accountId/transactions/${id}`)
-            .set('Authorization', makeAuthHeader(testUsers[0]))
+            .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .expect(204)
             .then(res => {
               supertest(app)
                 .get(`/api/:accountId`)
-                .set('Authorization', makeAuthHeader(testUsers[0]))
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(remainingTransactions)
             })
         })
