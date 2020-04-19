@@ -1,5 +1,6 @@
 const { expect } = require('chai');
 const knex = require('knex')
+const jwt = require('jsonwebtoken')
 const app = require('../src/app.js')
 const helpers = require('./test-helpers')
 
@@ -72,6 +73,29 @@ describe.only('Auth endpoints', function () {
         .post('/api/authentication')
         .send(userInvalidUser)
         .expect(401, { error: `Incorrect user_name or password` })
+    })
+
+    it(`responds 200 and JWT auth token using secret when valid credentials`, () => {
+      const validUser = {
+        username: testUser.username,
+        password: testUser.password,
+      }
+
+      // jwt.sign method takes three arguments: payload, a secret, and a configuration object
+      const expectedToken = jwt.sign(
+        { user_id: testUser.id }, // payload
+        process.env.JWT_SECRET, // secret
+        {
+          subject: testUser.username,
+          algorithm: 'HS256',
+        } // configuration object with the algorithm HS256
+      )
+      return supertest(app)
+        .post('/api/authentication')
+        .send(validUser)
+        .expect(200, {
+          authToken: expectedToken,
+        })
     })
 
   })

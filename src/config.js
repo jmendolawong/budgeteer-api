@@ -4,4 +4,6 @@ module.exports = {
   DATABASE_URL: process.env.DATABASE_URL || 'postgres://postgres@localhost/transactions',
   TEST_DATABASE_URL: process.env.TEST_DATABASE_URL || 'postgres://postgres@localhost/transactions-test',
   CLIENT_ORIGIN: 'https://budgeteer-app.now.sh',
+  JWT_SECRET: process.env.JWT_SECRET || 'change-this-secret',
+
 }
