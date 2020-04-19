@@ -4,7 +4,7 @@ const path = require('path');
 const uuid = require('uuid/v4');
 const moment = require('moment')
 const ExpenseService = require('./expense-service');
-const { requireAuth } = require('../middleware/basic-auth')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const expenseRouter = express.Router()
 const bodyParser = express.json()

@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const app = require('../src/app.js')
 const helpers = require('./test-helpers')
 
-describe.only('Auth endpoints', function () {
+describe('************  Auth Endpoints ************', function () {
   let db
 
   const testUsers = helpers.makeUsersArray();
@@ -31,7 +31,7 @@ describe.only('Auth endpoints', function () {
 
 
   /******************  Auth Endpoints ******************/
-  describe.only(`POST /api/authentication`, () => {
+  describe(`POST /api/authentication`, () => {
     beforeEach('insert users', () =>
       helpers.seedUsers(
         db,

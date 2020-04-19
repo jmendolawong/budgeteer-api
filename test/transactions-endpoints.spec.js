@@ -3,7 +3,7 @@ const knex = require('knex')
 const app = require('../src/app.js')
 const helpers = require('./test-helpers')
 
-describe('Transactions endpoints', function () {
+describe.only('Transactions endpoints', function () {
   let db
 
   const testUsers = helpers.makeUsersArray();
@@ -32,60 +32,6 @@ describe('Transactions endpoints', function () {
       .insert(testTransactions)
       .into('transactions'),
       helpers.seedUsers(db, testUsers)
-  })
-
-
-  /************  Protected Endpoints ************/
-  describe(`************  Protected Endpoints ************`, () => {
-
-    const protectedEndpoints = [
-      {
-        name: 'GET /api/:accountId',
-        path: '/api/:accountId'
-      },
-      {
-        name: 'GET /api/:accountId/transactions/:transactionId',
-        path: '/api/:accountId/transactions/5aa52679-1636-4b33-adc8-b27b7ca56fa8'
-      },
-    ]
-
-    protectedEndpoints.forEach(endpoint => {
-
-      describe(endpoint.name, () => {
-        it(`responds with 401 'Missing basic token' when no basic token`, () => {
-          return supertest(app)
-            .get(endpoint.path)
-            .expect(401, { error: `Missing basic token` })
-        })
-
-        it(`responds 401 'Unauthorized request' when no credentials in token`, () => {
-          const userNoCreds = { username: '', password: '' }
-          return supertest(app)
-            .get(endpoint.path)
-            .set('Authorization', helpers.makeAuthHeader(userNoCreds))
-            .expect(401, { error: `Unauthorized request` })
-        })
-
-        it(`responds 401 'Unauthorized request' when invalid user`, () => {
-          const userInvalidCreds = { username: 'user-not', password: 'existy' }
-          return supertest(app)
-            .get(endpoint.path)
-            .set('Authorization', helpers.makeAuthHeader(userInvalidCreds))
-            .expect(401, { error: `Unauthorized request` })
-        })
-
-        it(`responds 401 'Unauthorized request' when invalid password`, () => {
-          const userInvalidPass = { username: testUsers[0].username, password: 'wrong' }
-          return supertest(app)
-            .get(endpoint.path)
-            .set('Authorization', helpers.makeAuthHeader(userInvalidPass))
-            .expect(401, { error: `Unauthorized request` })
-        })
-
-      })
-
-    })
-
   })
 
 

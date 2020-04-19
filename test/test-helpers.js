@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs')
-
+const jwt = require('jsonwebtoken')
 
 function makeTransactionsArray() {
   return [
@@ -84,9 +84,14 @@ function makeUsersArray() {
   ]
 }
 
-function makeAuthHeader(user) {
-  const token = Buffer.from(`${user.username}:${user.password}`).toString('base64')
-  return `Basic ${token}`
+function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+  const token = jwt.sign({ user_id: user.id }, secret, {
+    subject: user.username,
+    algorithm: 'HS256',
+
+  })
+
+  return `Bearer ${token}`
 }
 
 
