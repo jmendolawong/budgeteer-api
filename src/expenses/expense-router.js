@@ -27,8 +27,8 @@ expenseRouter
   .all(requireAuth)
   .get((req, res, next) => {
     ExpenseService.getAllExpenses(
-      req.app.get('db')
-      //,      req.params.accountId
+      req.app.get('db'),
+      req.params.accountId
     )
       .then(expenses => {
         res.json(expenses.map(sanitizeExpense))
