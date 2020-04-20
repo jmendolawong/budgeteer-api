@@ -20,13 +20,9 @@ describe('************  Protected Endpoints ************', function () {
 
   after('disconnect from db', () => db.destroy())
 
-  before('Clean table', () =>
-    db.raw('TRUNCATE transactions, users')
-  )
+  before('Clean table', () => helpers.cleanTables(db))
 
-  afterEach('Clean table', () =>
-    db.raw('TRUNCATE transactions, users')
-  )
+  afterEach('Clean table', () => helpers.cleanTables(db))
 
   beforeEach('Seed tables', () => {
     return db

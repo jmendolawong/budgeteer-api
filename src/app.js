@@ -7,6 +7,7 @@ const { NODE_ENV, CLIENT_ORIGIN } = require('./config.js')
 
 const expenseRouter = require('./expenses/expense-router')
 const authRouter = require('./auth/auth-router')
+const usersRouter = require('./users/users-router')
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(morgan(morganSetting))
 
 /***********  Endpoints ***********/
 app.use('/api/authentication', authRouter)
+app.use('/api/users', usersRouter)
 app.use('/api', expenseRouter)
 
 

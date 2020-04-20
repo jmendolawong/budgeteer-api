@@ -77,7 +77,7 @@ function makeUsersArray() {
       "password": "password"
     },
     {
-      "id": ":accountId",
+      "id": "850319cc-6c89-40d4-91ac-e5ed33c8ae4e",
       "username": "tester",
       "password": "password1"
     }
@@ -103,9 +103,14 @@ function seedUsers(db, users) {
   return db.into('users').insert(preppedUsers)
 }
 
+function cleanTables(db) {
+  db.raw('TRUNCATE transactions, users')
+}
+
 module.exports = {
   makeTransactionsArray,
   makeUsersArray,
   makeAuthHeader,
   seedUsers,
+  cleanTables,
 }
