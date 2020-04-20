@@ -1,17 +1,19 @@
 const ExpenseService = {
- 
-  getAllExpenses(db) {
+
+  getAllExpenses(db, account) {
     return db
       .select('*')
       .from('transactions')
+      .where({ account })
       .orderBy('date', 'desc')
   },
 
-  getExpenseById(db, id) {
+  getExpenseById(db, account, id) {
     return db
       .select('*')
       .from('transactions')
       .where({ id })
+      .andWhere({ account })
       .first()
   },
 
@@ -25,11 +27,12 @@ const ExpenseService = {
       })
   },
 
-  deleteExpense(db, id) {
+  deleteExpense(db, account, id) {
     return db
       .delete()
       .from('transactions')
       .where({ id })
+      .andWhere ({account})
   },
 
 }

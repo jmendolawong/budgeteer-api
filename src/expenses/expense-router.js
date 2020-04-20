@@ -26,6 +26,7 @@ expenseRouter
   .route('/:accountId')
   .all(requireAuth)
   .get((req, res, next) => {
+    console.log(req.params.accountId)
     ExpenseService.getAllExpenses(
       req.app.get('db'),
       req.params.accountId
@@ -76,6 +77,7 @@ expenseRouter
   .all((req, res, next) => {
     ExpenseService.getExpenseById(
       req.app.get('db'),
+      req.params.accountId,
       req.params.transactionId
     )
       .then(expense => {
@@ -93,32 +95,15 @@ expenseRouter
     return res.json(sanitizeExpense(res.expense))
   })
   .delete((req, res, next) => {
-    //const account = req.params.accountId;
     ExpenseService.deleteExpense(
       req.app.get('db'),
+      req.params.accountId,
       req.params.transactionId
-      //, account
     )
       .then(() => {
         res.status(204).end()
       })
       .catch(next)
   })
-
-
-/*
- 
- 
-  res
-    .status(201)
-    .location(path.posix.join(req.originalUrl, '/'))
-})
- 
-//POST transaction
-.route('/:accountId/add-transaction')
-
-//POST category
-.route('/:accountId/add-category')
-*/
 
 module.exports = expenseRouter;
