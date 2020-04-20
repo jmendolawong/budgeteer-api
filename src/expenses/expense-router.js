@@ -26,7 +26,6 @@ expenseRouter
   .route('/:accountId')
   .all(requireAuth)
   .get((req, res, next) => {
-    console.log(req.params.accountId)
     ExpenseService.getAllExpenses(
       req.app.get('db'),
       req.params.accountId
