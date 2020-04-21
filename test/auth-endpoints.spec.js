@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const app = require('../src/app.js')
 const helpers = require('./test-helpers')
 
-describe('************  Auth Endpoints ************', function () {
+describe.only('************  Auth Endpoints ************', function () {
   let db
 
   const testUsers = helpers.makeUsersArray();
@@ -21,13 +21,9 @@ describe('************  Auth Endpoints ************', function () {
 
   after('disconnect from db', () => db.destroy())
 
-  before('Clean table', () =>
-    db.raw('TRUNCATE transactions, users')
-  )
+  before('Clean table', () => helpers.cleanTables(db))
 
-  afterEach('Clean table', () =>
-    db.raw('TRUNCATE transactions, users')
-  )
+  afterEach('Clean table', () => helpers.cleanTables(db))
 
 
   /******************  Auth Endpoints ******************/
@@ -87,6 +83,7 @@ describe('************  Auth Endpoints ************', function () {
         process.env.JWT_SECRET, // secret
         {
           subject: testUser.username,
+          expiresIn: process.env.JWT_EXPIRY,
           algorithm: 'HS256',
         } // configuration object with the algorithm HS256
       )

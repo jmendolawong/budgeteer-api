@@ -104,7 +104,7 @@ function seedUsers(db, users) {
 }
 
 function cleanTables(db) {
-  db.raw('TRUNCATE transactions, users')
+  return db.raw('TRUNCATE transactions, users')
 }
 
 module.exports = {

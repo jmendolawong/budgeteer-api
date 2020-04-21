@@ -3,7 +3,7 @@ const knex = require('knex')
 const app = require('../src/app.js')
 const helpers = require('./test-helpers')
 
-describe.only('Transactions endpoints', function () {
+describe('Transactions endpoints', function () {
   let db
 
   const testUsers = helpers.makeUsersArray();
@@ -34,12 +34,11 @@ describe.only('Transactions endpoints', function () {
   /************  GET Endpoints ************/
   describe('************  GET Endpoints ************', () => {
     describe('GET /api/:accountId', () => {
-
       context('Given no transactions in the db', () => {
-
         it('responds 200 and empty list', () => {
+          const accountId = '10954ec2-1f78-4ccd-8335-26de3edbb7b1'
           return supertest(app)
-            .get('/api/:accountId')
+            .get(`/api/${accountId}`)
             .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .expect(200, [])
         })
@@ -55,8 +54,9 @@ describe.only('Transactions endpoints', function () {
         })
 
         it('responds 200 and all transactions', () => {
+          const accountId = '10954ec2-1f78-4ccd-8335-26de3edbb7b1'
           return supertest(app)
-            .get('/api/:accountId')
+            .get(`/api/${accountId}`)
             .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .expect(200, testTransactions)
         })
@@ -68,9 +68,10 @@ describe.only('Transactions endpoints', function () {
     describe('GET /api/:accountId/transactions/:transactionId', () => {
       context('No transaction with that id', () => {
         it('responds 404', () => {
+          const accountId = '10954ec2-1f78-4ccd-8335-26de3edbb7b1'
           const id = 1234
           return supertest(app)
-            .get(`/api/:accountId/transactions/${id}`)
+            .get(`/api/${accountId}/transactions/${id}`)
             .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .expect(404, { error: { message: `Expense doesn't exist` } })
         })
@@ -86,10 +87,11 @@ describe.only('Transactions endpoints', function () {
         })
 
         it('responds 200 and article with id', () => {
+          const accountId = '10954ec2-1f78-4ccd-8335-26de3edbb7b1'
           const transactionId = 2
           const expectedTransaction = testTransactions[transactionId]
           return supertest(app)
-            .get(`/api/:accountId/transactions/d7c932ee-3474-482a-8f0e-49b64a67dd02`)
+            .get(`/api/${accountId}/transactions/d7c932ee-3474-482a-8f0e-49b64a67dd02`)
             .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .expect(200, expectedTransaction)
         })
@@ -134,6 +136,7 @@ describe.only('Transactions endpoints', function () {
       const requiredFields = ['category', 'date', 'cost']
 
       requiredFields.forEach(field => {
+        const accountId = '10954ec2-1f78-4ccd-8335-26de3edbb7b1'
         const newTransaction = {
           category: 'Groceries',
           date: '01/01/2020',
@@ -144,7 +147,7 @@ describe.only('Transactions endpoints', function () {
           delete newTransaction[field]
 
           return supertest(app)
-            .post('/api/:accountId')
+            .post(`/api/${accountId}`)
             .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .send(newTransaction)
             .expect(400, {
@@ -160,9 +163,10 @@ describe.only('Transactions endpoints', function () {
     describe('DELETE /:accountId/transactions/:transactionId', () => {
       context('No transaction with that id', () => {
         it('responds 404', () => {
+          const accountId = '10954ec2-1f78-4ccd-8335-26de3edbb7b1'
           const id = 1234
           return supertest(app)
-            .delete(`/api/:accountId/transactions/${id}`)
+            .delete(`/api/${accountId}/transactions/${id}`)
             .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .expect(404, { error: { message: `Expense doesn't exist` } })
         })
@@ -178,15 +182,16 @@ describe.only('Transactions endpoints', function () {
 
 
         it('responds 204 and the remaining articles', () => {
+          const accountId = '10954ec2-1f78-4ccd-8335-26de3edbb7b1'
           const id = 'd7c932ee-3474-482a-8f0e-49b64a67dd02'
           const remainingTransactions = testTransactions.filter(transaction => transaction.id !== id)
           return supertest(app)
-            .delete(`/api/:accountId/transactions/${id}`)
+            .delete(`/api/${accountId}/transactions/${id}`)
             .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .expect(204)
             .then(res => {
               supertest(app)
-                .get(`/api/:accountId`)
+                .get(`/api/${accountId}`)
                 .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(remainingTransactions)
             })
