@@ -1,26 +1,72 @@
-# Express Boilerplate!
+# Budgeteer
 
-This is a boilerplate project used for starting new projects!
+## Introduction
+Budgeteer is an experimental React application for expense tracking. 
+Budgeteer utilizes authentication for accounts, allowing users to categorize, date and record expenses.
 
-## Set up
+![Home Page](./public/images/home.png)
+![Home Page2](./public/images/home2.png)
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+#### Click [here](https://budgeteer-app.now.sh/) to test out the app 
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+### How it works
+There is a landing page for all first time and returning users. Any new users can register with a username and password.
+Returning users can input their credentials to return to their protected account. 
+Adding a transaction pops up a modal that asks for a category, date, cost, and optional payees and memos for the transaction.
 
-## Scripts
+![Catalog](./public/images/catalog.jpg)
 
-Start the application `npm start`
+![Login](./public/images/login.png)
 
-Start nodemon for the application `npm run dev`
+![Account Page](./public/images/account.png)
 
-Run the tests `npm test`
+![Add Transaction](./public/images/add-transaction.png)
 
-## Deploying
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+## Getting Started with the Client
+### Installing
+Clone the repository and download dependencies.
+```
+$ git clone https://github.com/jmw7/budgeteer-client.git
+$ cd recipe-client
+$ npm install
+```
+
+### Launching
+Start development server
+```
+$ npm run dev
+```
+This will automatically open a browser window with the project
+
+### Testing
+Run tests with Jest and Enzyme
+```
+$ npm run test
+```
+
+## Database
+To access the database use the URL below to connect to the client
+ - https://calm-taiga-41329.herokuapp.com
+
+### Methods
+  GET || POST || DELETE
+
+### Parameters
+ - /api/authentication
+ - /api/users/
+ - /api/:accountId
+
+### Response
+ - Post success response: 201
+ - Delete success response: 204
+ - Post error response: 400
+ - Authentication errror response: 401
+ - Not found error response: 404
+
+## Built with
+ - [CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS3)
+ - [React](https://reactjs.org/)
+ - [Node.js](https://nodejs.org/en/)
+ - [PostgreSQL](https://www.postgresql.org/)
+ - [Knex.js](http://knexjs.org/)
