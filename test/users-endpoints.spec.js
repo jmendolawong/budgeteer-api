@@ -8,7 +8,6 @@ describe('************  Users Endpoints ************', function () {
   let db
   const testUsers = helpers.makeUsersArray();
   const testUser = testUsers[0]
-  const testTransactions = helpers.makeTransactionsArray();
 
   before('make knex instance', () => {
     db = knex({

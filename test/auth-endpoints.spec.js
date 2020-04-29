@@ -1,15 +1,13 @@
-const { expect } = require('chai');
 const knex = require('knex')
 const jwt = require('jsonwebtoken')
 const app = require('../src/app.js')
 const helpers = require('./test-helpers')
 
-describe.only('************  Auth Endpoints ************', function () {
+describe('************  Auth Endpoints ************', function () {
   let db
 
   const testUsers = helpers.makeUsersArray();
   const testUser = testUsers[0]
-  //const testTransactions = helpers.makeTransactionsArray();
 
   before('make knex instance', () => {
     db = knex({
