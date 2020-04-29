@@ -4,7 +4,7 @@
 Budgeteer is an experimental React application for expense tracking. 
 Budgeteer utilizes authentication for accounts, allowing users to categorize, date and record expenses.
 
-![Home Page](./images/home.png)
+![Home Page](./public/images/home.png)
 
 #### Click [here](https://budgeteer-app.now.sh/) to test out the app 
 
@@ -13,11 +13,13 @@ There is a landing page for all first time and returning users. Any new users ca
 Returning users can input their credentials to return to their protected account. 
 Adding a transaction pops up a modal that asks for a category, date, cost, and optional payees and memos for the transaction.
 
-![Login](./images/login.png)
+![Catalog](./public/images/catalog.jpg)
 
-![Account Page](./images/account.png)
+![Login](./public/images/login.png)
 
-![Add Transaction](./images/add-transaction.png)
+![Account Page](./public/images/account.png)
+
+![Add Transaction](./public/images/add-transaction.png)
 
 
 ## Getting Started with the Client
@@ -67,3 +69,11 @@ To access the database use the URL below to connect to the client
  - [Node.js](https://nodejs.org/en/)
  - [PostgreSQL](https://www.postgresql.org/)
  - [Knex.js](http://knexjs.org/)
+
+ ## Images
+ - "[Justice](https://thenounproject.com/scribble.liners/collection/finance/?i=2044978)" by Scribble.liners from [the Noun Project](https://thenounproject.com/)
+ - "[Budgeting](https://thenounproject.com/term/budgeting/2009557/)" by Scribble.liners from [the Noun Project](https://thenounproject.com/)
+ - "[Chart](https://thenounproject.com/term/chart/1970984/)" by Scribble.liners from [the Noun Project](https://thenounproject.com/)
+ - "[Piggy Bank](https://thenounproject.com/search/?q=piggy%20bank&i=2976170)" by alison from [the Noun Project](https://thenounproject.com/)
+ - [Piggy Bank - background](https://downpaymentresource.com/wp-content/uploads/2017/04/iStock-508660880-e1492534133806.jpg)
+- [Fist of money](https://www.clipart.email/download/1316317.html)
