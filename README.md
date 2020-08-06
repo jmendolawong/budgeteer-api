@@ -27,7 +27,7 @@ Adding a transaction pops up a modal that asks for a category, date, cost, and o
 Clone the repository and download dependencies.
 ```
 $ git clone https://github.com/jmw7/budgeteer-client.git
-$ cd recipe-client
+$ cd budgeteer-client
 $ npm install
 ```
 
